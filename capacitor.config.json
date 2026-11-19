@@ -1,0 +1,21 @@
+{
+  "appId": "ae.personal.nutripulse",
+  "appName": "NutriPulse Pro",
+  "webDir": "dist",
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "DARK",
+      "backgroundColor": "#090d16"
+    },
+    "SplashScreen": {
+      "backgroundColor": "#090d16",
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": true,
+      "splashImmersive": true,
+      "showSpinner": false
+    }
+  }
+}

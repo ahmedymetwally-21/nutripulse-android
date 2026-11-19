@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  html,
+  body {
+    background-color: #090d16;
+    color: #f1f5f9;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+
+  html[dir="rtl"],
+  html[dir="rtl"] body {
+    font-family: "Cairo", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.safe-header-top {
+  padding-top: max(env(safe-area-inset-top, 0px), 28px);
+}
+
+.safe-bottom-nav {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
+}
+
+.safe-toast-top {
+  top: calc(max(env(safe-area-inset-top, 0px), 28px) + 12px);
+}
+
+@keyframes splashProgress {
+  0% {
+    transform: scaleX(0.08);
+  }
+  70% {
+    transform: scaleX(0.84);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.animate-splash-progress {
+  animation: splashProgress 1.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-splash-progress {
+    animation: none;
+    transform: scaleX(1);
+  }
+}

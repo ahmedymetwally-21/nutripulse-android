@@ -1,0 +1,1319 @@
+=== FILE: capacitor.config.json ===
+{
+  "appId": "ae.personal.nutripulse",
+  "appName": "NutriPulse Pro",
+  "webDir": "dist"
+}
+
+
+=== FILE: index.html ===
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#090d16" />
+    <title>NutriPulse Pro</title>
+  </head>
+  <body class="bg-[#090d16] text-slate-100 select-none">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+
+=== FILE: package.json ===
+{
+  "name": "nutripulse-android",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/status-bar": "^8.0.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "oxlint": "^1.90.0",
+    "tailwindcss": "^4.3.5",
+    "vite": "^8.3.6"
+  }
+}
+
+
+=== FILE: vite.config.js ===
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})
+
+
+=== FILE: src/App.css ===
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+
+
+=== FILE: src/App.jsx ===
+import { useState, useEffect, useMemo, useRef } from "react";
+
+const INITIAL_FOOD_DB = [
+  { id: "f1", name: "Cooked Chicken Breast", category: "Protein", unit: "100g", defaultAmount: 200, isServing: false, cal: 165, carb: 0, prot: 31, fat: 3.6, fib: 0, sug: 0, sod: 74, pot: 256, calc: 15, iro: 1.0, vitc: 0 },
+  { id: "f2", name: "Canned Tuna (in Water, Drained)", category: "Protein", unit: "1 Large Can (145g)", defaultAmount: 1, isServing: true, cal: 160, carb: 0, prot: 36, fat: 1.2, fib: 0, sug: 0, sod: 360, pot: 340, calc: 18, iro: 2.1, vitc: 0 },
+  { id: "f3", name: "Grilled Salmon Fillet", category: "Protein", unit: "100g", defaultAmount: 150, isServing: false, cal: 208, carb: 0, prot: 20.4, fat: 13.4, fib: 0, sug: 0, sod: 59, pot: 363, calc: 12, iro: 0.8, vitc: 0 },
+  { id: "f4", name: "Lean Ground Beef (5% Fat)", category: "Protein", unit: "100g", defaultAmount: 150, isServing: false, cal: 137, carb: 0, prot: 21.4, fat: 5.0, fib: 0, sug: 0, sod: 66, pot: 348, calc: 12, iro: 2.5, vitc: 0 },
+  { id: "f5", name: "Whole Large Egg (Boiled/Poached)", category: "Protein", unit: "1 Egg (50g)", defaultAmount: 2, isServing: true, cal: 72, carb: 0.4, prot: 6.3, fat: 4.8, fib: 0, sug: 0.2, sod: 71, pot: 69, calc: 28, iro: 0.9, vitc: 0 },
+  { id: "f6", name: "Egg Whites (Liquid/Boiled)", category: "Protein", unit: "1 Large White", defaultAmount: 4, isServing: true, cal: 17, carb: 0.2, prot: 3.6, fat: 0.1, fib: 0, sug: 0.2, sod: 55, pot: 54, calc: 2, iro: 0, vitc: 0 },
+  { id: "f7", name: "Grilled Shish Tawook (Chicken Skewers)", category: "Regional", unit: "100g", defaultAmount: 200, isServing: false, cal: 185, carb: 2.5, prot: 28, fat: 6.8, fib: 0.3, sug: 1.0, sod: 420, pot: 280, calc: 24, iro: 1.2, vitc: 2 },
+  { id: "f8", name: "Beef/Lamb Kofta Kebab (Grilled)", category: "Regional", unit: "100g", defaultAmount: 150, isServing: false, cal: 255, carb: 2.0, prot: 22, fat: 17.5, fib: 0.5, sug: 0.5, sod: 480, pot: 310, calc: 26, iro: 2.7, vitc: 1 },
+  { id: "f9", name: "Chicken Shawarma (Meat Only, No Bread)", category: "Regional", unit: "100g", defaultAmount: 180, isServing: false, cal: 198, carb: 1.8, prot: 26.5, fat: 9.2, fib: 0.2, sug: 0.5, sod: 540, pot: 260, calc: 20, iro: 1.4, vitc: 1 },
+  { id: "f10", name: "Cottage Cheese (Low Fat 2%)", category: "Dairy", unit: "100g", defaultAmount: 150, isServing: false, cal: 81, carb: 4.3, prot: 10.5, fat: 2.3, fib: 0, sug: 4.0, sod: 306, pot: 120, calc: 111, iro: 0.1, vitc: 0 },
+  { id: "f11", name: "Greek Yogurt (0% Fat, Plain)", category: "Dairy", unit: "1 Container (170g)", defaultAmount: 1, isServing: true, cal: 100, carb: 6.1, prot: 17.3, fat: 0.6, fib: 0, sug: 5.5, sod: 61, pot: 240, calc: 189, iro: 0.1, vitc: 0 },
+  { id: "f12", name: "Cooked White Basmati Rice", category: "Carbs", unit: "100g", defaultAmount: 150, isServing: false, cal: 130, carb: 28.2, prot: 2.7, fat: 0.3, fib: 0.4, sug: 0.1, sod: 1, pot: 35, calc: 10, iro: 0.2, vitc: 0 },
+  { id: "f13", name: "Cooked Brown Rice", category: "Carbs", unit: "100g", defaultAmount: 150, isServing: false, cal: 112, carb: 23.5, prot: 2.6, fat: 0.9, fib: 1.8, sug: 0.4, sod: 5, pot: 43, calc: 10, iro: 0.4, vitc: 0 },
+  { id: "f14", name: "Rolled Oats (Dry Weight)", category: "Carbs", unit: "100g", defaultAmount: 60, isServing: false, cal: 389, carb: 66.3, prot: 16.9, fat: 6.9, fib: 10.6, sug: 0.9, sod: 2, pot: 429, calc: 54, iro: 4.7, vitc: 0 },
+  { id: "f15", name: "Baked Sweet Potato", category: "Carbs", unit: "100g", defaultAmount: 200, isServing: false, cal: 90, carb: 20.7, prot: 2.0, fat: 0.2, fib: 3.3, sug: 6.5, sod: 36, pot: 475, calc: 38, iro: 0.7, vitc: 19.6 },
+  { id: "f16", name: "Boiled/Baked White Potato", category: "Carbs", unit: "100g", defaultAmount: 200, isServing: false, cal: 87, carb: 20.1, prot: 1.9, fat: 0.1, fib: 1.8, sug: 0.9, sod: 4, pot: 379, calc: 5, iro: 0.3, vitc: 13.0 },
+  { id: "f17", name: "Whole Wheat Arabic Bread (1 Loaf)", category: "Regional", unit: "1 Loaf (60g)", defaultAmount: 1, isServing: true, cal: 160, carb: 33.5, prot: 5.8, fat: 1.1, fib: 4.2, sug: 0.8, sod: 280, pot: 110, calc: 15, iro: 1.8, vitc: 0 },
+  { id: "f18", name: "Foul Medames (Fava Beans, No Oil)", category: "Regional", unit: "100g", defaultAmount: 200, isServing: false, cal: 110, carb: 19.6, prot: 7.6, fat: 0.4, fib: 5.4, sug: 1.8, sod: 250, pot: 268, calc: 36, iro: 1.5, vitc: 1.2 },
+  { id: "f19", name: "Lentil Soup (Shorbat Adas)", category: "Regional", unit: "1 Bowl (250ml)", defaultAmount: 1, isServing: true, cal: 165, carb: 26.0, prot: 10.5, fat: 2.2, fib: 6.5, sug: 2.5, sod: 410, pot: 440, calc: 32, iro: 3.1, vitc: 4.0 },
+  { id: "f20", name: "Hummus (Traditional Chickpea Dip)", category: "Regional", unit: "100g", defaultAmount: 60, isServing: false, cal: 166, carb: 14.3, prot: 7.9, fat: 9.6, fib: 6.0, sug: 0.3, sod: 379, pot: 228, calc: 38, iro: 2.4, vitc: 0 },
+  { id: "f20b", name: "Koshary (Traditional Egyptian Bowl)", category: "Regional", unit: "100g", defaultAmount: 250, isServing: false, cal: 168, carb: 29.5, prot: 5.2, fat: 3.1, fib: 3.4, sug: 2.2, sod: 310, pot: 195, calc: 22, iro: 1.6, vitc: 3.0 },
+  { id: "f21", name: "Banana (Medium)", category: "Fruits & Veg", unit: "1 Medium (118g)", defaultAmount: 1, isServing: true, cal: 105, carb: 27.0, prot: 1.3, fat: 0.4, fib: 3.1, sug: 14.4, sod: 1, pot: 422, calc: 6, iro: 0.3, vitc: 10.3 },
+  { id: "f22", name: "Apple (Medium)", category: "Fruits & Veg", unit: "1 Medium (182g)", defaultAmount: 1, isServing: true, cal: 95, carb: 25.1, prot: 0.5, fat: 0.3, fib: 4.4, sug: 18.9, sod: 2, pot: 195, calc: 11, iro: 0.2, vitc: 8.4 },
+  { id: "f23", name: "Orange (Medium)", category: "Fruits & Veg", unit: "1 Orange (140g)", defaultAmount: 1, isServing: true, cal: 66, carb: 16.5, prot: 1.3, fat: 0.2, fib: 3.4, sug: 13.0, sod: 0, pot: 250, calc: 56, iro: 0.1, vitc: 74.5 },
+  { id: "f24", name: "Dates (Medjool / Sukkari)", category: "Regional", unit: "1 Date (24g)", defaultAmount: 3, isServing: true, cal: 66, carb: 18.0, prot: 0.4, fat: 0.0, fib: 1.6, sug: 16.0, sod: 0, pot: 167, calc: 15, iro: 0.2, vitc: 0 },
+  { id: "f25", name: "Steamed Broccoli", category: "Fruits & Veg", unit: "100g", defaultAmount: 150, isServing: false, cal: 35, carb: 7.2, prot: 2.4, fat: 0.4, fib: 3.3, sug: 1.4, sod: 41, pot: 293, calc: 40, iro: 0.7, vitc: 64.9 },
+  { id: "f26", name: "Mixed Green Salad (Cucumber, Tomato, Lettuce)", category: "Fruits & Veg", unit: "1 Large Bowl (200g)", defaultAmount: 1, isServing: true, cal: 36, carb: 7.5, prot: 1.8, fat: 0.3, fib: 2.6, sug: 4.1, sod: 18, pot: 410, calc: 35, iro: 0.9, vitc: 24.0 },
+  { id: "f27", name: "Avocado (Fresh)", category: "Fats", unit: "100g", defaultAmount: 100, isServing: false, cal: 160, carb: 8.5, prot: 2.0, fat: 14.7, fib: 6.7, sug: 0.7, sod: 7, pot: 485, calc: 12, iro: 0.6, vitc: 10.0 },
+  { id: "f28", name: "Raw Almonds", category: "Fats", unit: "100g", defaultAmount: 30, isServing: false, cal: 579, carb: 21.6, prot: 21.2, fat: 49.9, fib: 12.5, sug: 4.4, sod: 1, pot: 733, calc: 269, iro: 3.7, vitc: 0 },
+  { id: "f29", name: "Extra Virgin Olive Oil", category: "Fats", unit: "1 Tbsp (14g)", defaultAmount: 1, isServing: true, cal: 119, carb: 0, prot: 0, fat: 13.5, fib: 0, sug: 0, sod: 0, pot: 0, calc: 0, iro: 0.1, vitc: 0 },
+  { id: "f30", name: "Natural Peanut Butter", category: "Fats", unit: "1 Tbsp (16g)", defaultAmount: 1, isServing: true, cal: 94, carb: 3.2, prot: 4.0, fat: 8.0, fib: 1.0, sug: 1.5, sod: 73, pot: 104, calc: 8, iro: 0.3, vitc: 0 },
+  { id: "f31", name: "Whey Protein Isolate (1 Scoop)", category: "Supplements", unit: "1 Scoop (30g)", defaultAmount: 1, isServing: true, cal: 115, carb: 1.5, prot: 25.0, fat: 0.5, fib: 0, sug: 1.0, sod: 120, pot: 150, calc: 130, iro: 0.3, vitc: 0 },
+  { id: "f32", name: "Black Coffee / Americano (Unsweetened)", category: "Drinks", unit: "1 Cup (240ml)", defaultAmount: 1, isServing: true, cal: 2, carb: 0, prot: 0.3, fat: 0, fib: 0, sug: 0, sod: 5, pot: 116, calc: 5, iro: 0, vitc: 0 }
+];
+
+const DEFAULT_GOALS = {
+  cal: 1900, carb: 145, prot: 170, fat: 55, water: 3500, steps: 10000,
+  fastingHours: 16, targetWeight: 110, heightCm: 181, fib: 30, sug: 40,
+  sod: 2300, pot: 3500, calc: 1000, iro: 18, vitc: 90
+};
+
+const MEAL_TYPES = ["Meal 1 (Break-Fast)", "Meal 2 (Main)", "Snack / Shake", "Breakfast", "Lunch", "Dinner"];
+
+function shiftDate(dateStr, deltaDays) {
+  const d = new Date(dateStr + "T12:00:00");
+  d.setDate(d.getDate() + deltaDays);
+  return d.toISOString().split("T")[0];
+}
+
+function getLastNDays(baseDateStr, n = 7) {
+  const result = [];
+  const base = new Date(baseDateStr + "T12:00:00");
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(base);
+    d.setDate(base.getDate() - i);
+    const iso = d.toISOString().split("T")[0];
+    const shortDay = d.toLocaleDateString("en-US", { weekday: "short" });
+    const dayNum = d.getDate();
+    result.push({ date: iso, label: `${shortDay} ${dayNum}`, shortDay });
+  }
+  return result;
+}
+
+function formatDuration(ms) {
+  if (ms <= 0) return "00h 00m 00s";
+  const totalMins = Math.floor(ms / 60000);
+  const hrs = Math.floor(totalMins / 60);
+  const mins = totalMins % 60;
+  const secs = Math.floor((ms % 60000) / 1000);
+  return `${String(hrs).padStart(2, "0")}h ${String(mins).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`;
+}
+
+export default function App() {
+  const todayKey = new Date().toISOString().split("T")[0];
+  const fileInputRef = useRef(null);
+  const backupImportRef = useRef(null);
+
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [selectedDate, setSelectedDate] = useState(todayKey);
+  const [nowTick, setNowTick] = useState(Date.now());
+
+  const [goals, setGoals] = useState(() => {
+    try {
+      const saved = localStorage.getItem("np_pro_goals");
+      return saved ? { ...DEFAULT_GOALS, ...JSON.parse(saved) } : DEFAULT_GOALS;
+    } catch { return DEFAULT_GOALS; }
+  });
+
+  const [customFoods, setCustomFoods] = useState(() => {
+    try {
+      const saved = localStorage.getItem("np_pro_custom_foods");
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+
+  const [logsByDate, setLogsByDate] = useState(() => {
+    try {
+      const saved = localStorage.getItem("np_pro_logs");
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
+
+  const [weightLogs, setWeightLogs] = useState(() => {
+    try {
+      const saved = localStorage.getItem("np_pro_weights");
+      if (saved) return JSON.parse(saved);
+      return [{ date: todayKey, weight: 124.0, note: "Current baseline" }];
+    } catch {
+      return [{ date: todayKey, weight: 124.0, note: "Current baseline" }];
+    }
+  });
+
+  const [savedCombos, setSavedCombos] = useState(() => {
+    try {
+      const saved = localStorage.getItem("np_pro_combos");
+      if (saved) return JSON.parse(saved);
+      return [
+        {
+          id: "combo_default_1",
+          name: "High-Protein Cut Combo (400g Chicken + 1 Large Tuna)",
+          items: [
+            { name: "Cooked Chicken Breast (400g)", meal: "Meal 1 (Break-Fast)", cal: 660, carb: 0, prot: 124, fat: 14.4, fib: 0, sug: 0, sod: 296, pot: 1024, calc: 60, iro: 4.0, vitc: 0 },
+            { name: "Canned Tuna in Water (1 Large Can)", meal: "Meal 2 (Main)", cal: 160, carb: 0, prot: 36, fat: 1.2, fib: 0, sug: 0, sod: 360, pot: 340, calc: 18, iro: 2.1, vitc: 0 }
+          ]
+        }
+      ];
+    } catch { return []; }
+  });
+
+  const [fastingState, setFastingState] = useState(() => {
+    try {
+      const saved = localStorage.getItem("np_pro_fasting");
+      return saved ? JSON.parse(saved) : { isFasting: false, startTime: null, targetHours: 16 };
+    } catch {
+      return { isFasting: false, startTime: null, targetHours: 16 };
+    }
+  });
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedMeal, setSelectedMeal] = useState("Meal 1 (Break-Fast)");
+  const [selectedFood, setSelectedFood] = useState(INITIAL_FOOD_DB[0]);
+  const [amountInput, setAmountInput] = useState(200);
+  const [showMicros, setShowMicros] = useState(false);
+  const [showCustomModal, setShowCustomModal] = useState(false);
+  const [showJsonPasteModal, setShowJsonPasteModal] = useState(false);
+  const [jsonPasteText, setJsonPasteText] = useState("");
+  const [customWaterInput, setCustomWaterInput] = useState("");
+  const [customStepsInput, setCustomStepsInput] = useState("");
+  const [comboNameInput, setComboNameInput] = useState("");
+  const [toastMsg, setToastMsg] = useState(null);
+
+  const [weightInputDate, setWeightInputDate] = useState(todayKey);
+  const [weightInputValue, setWeightInputValue] = useState("");
+  const [weightInputNote, setWeightInputNote] = useState("");
+  const [weightRangeDays, setWeightRangeDays] = useState(30);
+
+  const [newFood, setNewFood] = useState({
+    name: "", category: "Custom", unit: "100g", isServing: false,
+    cal: "", carb: "", prot: "", fat: "",
+    fib: "", sug: "", sod: "", pot: "", calc: "", iro: "", vitc: ""
+  });
+
+  useEffect(() => {
+    if (!fastingState.isFasting) return;
+    const timer = setInterval(() => setNowTick(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [fastingState.isFasting]);
+
+  useEffect(() => { try { localStorage.setItem("np_pro_goals", JSON.stringify(goals)); } catch {} }, [goals]);
+  useEffect(() => { try { localStorage.setItem("np_pro_custom_foods", JSON.stringify(customFoods)); } catch {} }, [customFoods]);
+  useEffect(() => { try { localStorage.setItem("np_pro_logs", JSON.stringify(logsByDate)); } catch {} }, [logsByDate]);
+  useEffect(() => { try { localStorage.setItem("np_pro_weights", JSON.stringify(weightLogs)); } catch {} }, [weightLogs]);
+  useEffect(() => { try { localStorage.setItem("np_pro_combos", JSON.stringify(savedCombos)); } catch {} }, [savedCombos]);
+  useEffect(() => { try { localStorage.setItem("np_pro_fasting", JSON.stringify(fastingState)); } catch {} }, [fastingState]);
+
+  const triggerToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 2600);
+  };
+
+  const allFoods = useMemo(() => [...customFoods, ...INITIAL_FOOD_DB], [customFoods]);
+  const currentDayData = useMemo(() => logsByDate[selectedDate] || { water: 0, steps: 0, waterHistory: [], foods: [] }, [logsByDate, selectedDate]);
+
+  const updateCurrentDay = (updater) => {
+    setLogsByDate((prev) => {
+      const existing = prev[selectedDate] || { water: 0, steps: 0, waterHistory: [], foods: [] };
+      return { ...prev, [selectedDate]: updater(existing) };
+    });
+  };
+
+  const totals = useMemo(() => {
+    return (currentDayData.foods || []).reduce(
+      (acc, item) => {
+        acc.cal += Number(item.cal) || 0;
+        acc.carb += Number(item.carb) || 0;
+        acc.prot += Number(item.prot) || 0;
+        acc.fat += Number(item.fat) || 0;
+        acc.fib += Number(item.fib) || 0;
+        acc.sug += Number(item.sug) || 0;
+        acc.sod += Number(item.sod) || 0;
+        acc.pot += Number(item.pot) || 0;
+        acc.calc += Number(item.calc) || 0;
+        acc.iro += Number(item.iro) || 0;
+        acc.vitc += Number(item.vitc) || 0;
+        return acc;
+      },
+      { cal: 0, carb: 0, prot: 0, fat: 0, fib: 0, sug: 0, sod: 0, pot: 0, calc: 0, iro: 0, vitc: 0 }
+    );
+  }, [currentDayData]);
+
+  const applySavedCombo = (combo) => {
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const entries = combo.items.map((it, idx) => ({ ...it, id: `log_${Date.now()}_${idx}`, time: now }));
+    updateCurrentDay((day) => ({ ...day, foods: [...entries, ...(day.foods || [])] }));
+    const totalKcal = entries.reduce((s, x) => s + x.cal, 0);
+    const totalProt = entries.reduce((s, x) => s + x.prot, 0);
+    triggerToast(`Logged "${combo.name}" (${totalKcal} kcal • ${totalProt}g P)!`);
+  };
+
+  const saveTodayAsCombo = () => {
+    if (!currentDayData.foods || currentDayData.foods.length === 0) {
+      triggerToast("Log at least 1 food today first!");
+      return;
+    }
+    const label = comboNameInput.trim() || `Saved Day Preset (${Math.round(totals.cal)} kcal • ${Math.round(totals.prot)}g P)`;
+    const newCombo = {
+      id: "combo_" + Date.now(),
+      name: label,
+      items: currentDayData.foods.map(({ id, time, ...rest }) => rest)
+    };
+    setSavedCombos((prev) => [newCombo, ...prev]);
+    setComboNameInput("");
+    triggerToast(`Saved "${label}" to 1-Tap Presets!`);
+  };
+
+  const handleSelectFoodItem = (food) => {
+    setSelectedFood(food);
+    setAmountInput(food.defaultAmount || (food.isServing ? 1 : 100));
+  };
+
+  const previewNutrients = useMemo(() => {
+    if (!selectedFood) return null;
+    const mult = selectedFood.isServing ? (parseFloat(amountInput) || 0) : (parseFloat(amountInput) || 0) / 100;
+    const scale = (val) => +((Number(val) || 0) * mult).toFixed(1);
+    return {
+      cal: Math.round((Number(selectedFood.cal) || 0) * mult),
+      carb: scale(selectedFood.carb), prot: scale(selectedFood.prot), fat: scale(selectedFood.fat),
+      fib: scale(selectedFood.fib), sug: scale(selectedFood.sug),
+      sod: Math.round((Number(selectedFood.sod) || 0) * mult),
+      pot: Math.round((Number(selectedFood.pot) || 0) * mult),
+      calc: Math.round((Number(selectedFood.calc) || 0) * mult),
+      iro: scale(selectedFood.iro), vitc: scale(selectedFood.vitc)
+    };
+  }, [selectedFood, amountInput]);
+
+  const handleLogSelectedFood = () => {
+    if (!selectedFood || !previewNutrients) return;
+    const labelAmount = selectedFood.isServing ? `${amountInput} × ${selectedFood.unit}` : `${amountInput}g`;
+    const entry = {
+      id: "log_" + Date.now(),
+      name: `${selectedFood.name} (${labelAmount})`,
+      meal: selectedMeal,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      ...previewNutrients
+    };
+    updateCurrentDay((day) => ({ ...day, foods: [entry, ...(day.foods || [])] }));
+    triggerToast(`Added ${selectedFood.name} to ${selectedMeal}`);
+    setActiveTab("dashboard");
+  };
+
+  const handleDeleteFoodLog = (id) => {
+    updateCurrentDay((day) => ({ ...day, foods: day.foods.filter((f) => f.id !== id) }));
+  };
+
+  const handleAddWater = (ml) => {
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    updateCurrentDay((day) => {
+      const newTotal = Math.max(0, (day.water || 0) + ml);
+      const historyItem = { id: Date.now(), amount: ml, time: now };
+      return { ...day, water: newTotal, waterHistory: ml > 0 ? [historyItem, ...(day.waterHistory || [])] : (day.waterHistory || []) };
+    });
+    if (ml > 0) triggerToast(`+${ml}ml water logged!`);
+  };
+
+  const handleAddSteps = (delta) => {
+    updateCurrentDay((day) => ({ ...day, steps: Math.max(0, (day.steps || 0) + delta) }));
+    if (delta > 0) triggerToast(`+${delta.toLocaleString()} steps added!`);
+  };
+
+  const handleToggleFasting = () => {
+    if (fastingState.isFasting) {
+      const elapsedHrs = ((Date.now() - fastingState.startTime) / 3600000).toFixed(1);
+      setFastingState((prev) => ({ ...prev, isFasting: false, startTime: null }));
+      triggerToast(`Fast ended after ${elapsedHrs} hours!`);
+    } else {
+      setFastingState((prev) => ({ ...prev, isFasting: true, startTime: Date.now() }));
+      triggerToast(`Started ${fastingState.targetHours}h Intermittent Fast!`);
+    }
+  };
+
+  const handleSaveCustomFood = (e) => {
+    e.preventDefault();
+    if (!newFood.name.trim()) return;
+    const created = {
+      id: "cust_" + Date.now(), name: newFood.name.trim(), category: "Custom",
+      unit: newFood.isServing ? "1 Serving" : "100g", defaultAmount: newFood.isServing ? 1 : 100,
+      isServing: newFood.isServing,
+      cal: Number(newFood.cal) || 0, carb: Number(newFood.carb) || 0, prot: Number(newFood.prot) || 0, fat: Number(newFood.fat) || 0,
+      fib: Number(newFood.fib) || 0, sug: Number(newFood.sug) || 0, sod: Number(newFood.sod) || 0, pot: Number(newFood.pot) || 0,
+      calc: Number(newFood.calc) || 0, iro: Number(newFood.iro) || 0, vitc: Number(newFood.vitc) || 0
+    };
+    setCustomFoods((prev) => [created, ...prev]);
+    setSelectedFood(created);
+    setAmountInput(created.defaultAmount);
+    setShowCustomModal(false);
+    setNewFood({ name: "", category: "Custom", unit: "100g", isServing: false, cal: "", carb: "", prot: "", fat: "", fib: "", sug: "", sod: "", pot: "", calc: "", iro: "", vitc: "" });
+    triggerToast(`Saved "${created.name}" to your Food Database!`);
+  };
+
+  const processImportedFoodJson = (rawJsonString) => {
+    try {
+      const parsed = JSON.parse(rawJsonString);
+      let rawList = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.foods)) ? parsed.foods : (parsed && typeof parsed === "object" && parsed.name) ? [parsed] : null;
+      if (!rawList) {
+        alert("Invalid JSON format. Expected an array of food items or an object with 'name'.");
+        return;
+      }
+      let addedFoods = [];
+      let autoLogItems = [];
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      rawList.forEach((item, idx) => {
+        if (!item || !item.name) return;
+        const isServ = Boolean(item.isServing);
+        const normalized = {
+          id: item.id || `json_${Date.now()}_${idx}`,
+          name: String(item.name).trim(),
+          category: item.category || "JSON Import",
+          unit: item.unit || (isServ ? "1 Serving" : "100g"),
+          defaultAmount: Number(item.defaultAmount) || (isServ ? 1 : 100),
+          isServing: isServ,
+          cal: Number(item.cal ?? item.calories) || 0, carb: Number(item.carb ?? item.carbs) || 0,
+          prot: Number(item.prot ?? item.protein) || 0, fat: Number(item.fat ?? item.fats) || 0,
+          fib: Number(item.fib ?? item.fiber) || 0, sug: Number(item.sug ?? item.sugar) || 0,
+          sod: Number(item.sod ?? item.sodium) || 0, pot: Number(item.pot ?? item.potassium) || 0,
+          calc: Number(item.calc ?? item.calcium) || 0, iro: Number(item.iro ?? item.iron) || 0,
+          vitc: Number(item.vitc ?? item.vitaminC) || 0
+        };
+        addedFoods.push(normalized);
+        if (item.logNow) {
+          autoLogItems.push({
+            id: `log_${Date.now()}_${idx}`, name: `${normalized.name} (${normalized.unit})`,
+            meal: item.meal || selectedMeal, time: now,
+            cal: normalized.cal, carb: normalized.carb, prot: normalized.prot, fat: normalized.fat,
+            fib: normalized.fib, sug: normalized.sug, sod: normalized.sod, pot: normalized.pot,
+            calc: normalized.calc, iro: normalized.iro, vitc: normalized.vitc
+          });
+        }
+      });
+
+      if (addedFoods.length === 0) return;
+      setCustomFoods((prev) => {
+        const existingNames = new Set(addedFoods.map(f => f.name.toLowerCase()));
+        return [...addedFoods, ...prev.filter(p => !existingNames.has(p.name.toLowerCase()))];
+      });
+      if (autoLogItems.length > 0) {
+        updateCurrentDay((day) => ({ ...day, foods: [...autoLogItems, ...(day.foods || [])] }));
+      }
+      setSelectedFood(addedFoods[0]);
+      setAmountInput(addedFoods[0].defaultAmount);
+      setSelectedCategory("All");
+      setShowJsonPasteModal(false);
+      setJsonPasteText("");
+      triggerToast(`Imported ${addedFoods.length} food(s) from JSON!`);
+    } catch (err) {
+      alert("Could not parse JSON. Error: " + err.message);
+    }
+  };
+
+  const handleFileUploadJson = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => processImportedFoodJson(evt.target.result);
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
+  const handleExportJSON = () => {
+    const payload = { version: "NutriPulse_v3", goals, customFoods, logsByDate, weightLogs, savedCombos, exportedAt: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `NutriPulse_Backup_${selectedDate}.json`;
+    a.click();
+    triggerToast("Full JSON backup downloaded!");
+  };
+
+  const handleRestoreFullBackup = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const data = JSON.parse(evt.target.result);
+        if (!data || (!data.logsByDate && !data.weightLogs && !data.goals)) {
+          alert("Invalid NutriPulse backup file.");
+          return;
+        }
+        if (data.goals) setGoals((prev) => ({ ...prev, ...data.goals }));
+        if (Array.isArray(data.customFoods)) setCustomFoods(data.customFoods);
+        if (data.logsByDate && typeof data.logsByDate === "object") setLogsByDate(data.logsByDate);
+        if (Array.isArray(data.weightLogs)) setWeightLogs(data.weightLogs);
+        if (Array.isArray(data.savedCombos)) setSavedCombos(data.savedCombos);
+        triggerToast("Full NutriPulse backup restored!");
+      } catch (err) {
+        alert("Failed to restore backup: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
+  const handleAddOrUpdateWeight = (e) => {
+    e.preventDefault();
+    const val = parseFloat(weightInputValue);
+    if (!val || val <= 0) return;
+    setWeightLogs((prev) => {
+      const updated = [...prev.filter((w) => w.date !== weightInputDate), { date: weightInputDate, weight: +val.toFixed(1), note: weightInputNote.trim() }];
+      updated.sort((a, b) => a.date.localeCompare(b.date));
+      return updated;
+    });
+    setWeightInputValue("");
+    setWeightInputNote("");
+    triggerToast(`Saved weight: ${val.toFixed(1)} kg on ${weightInputDate}`);
+  };
+
+  const handleDeleteWeight = (dateKey) => setWeightLogs((prev) => prev.filter((w) => w.date !== dateKey));
+
+  const filteredWeightLogs = useMemo(() => {
+    const sorted = [...weightLogs].sort((a, b) => a.date.localeCompare(b.date));
+    if (weightRangeDays === 365 || sorted.length === 0) return sorted;
+    const cutoff = new Date(selectedDate + "T12:00:00");
+    cutoff.setDate(cutoff.getDate() - weightRangeDays);
+    const cutoffStr = cutoff.toISOString().split("T")[0];
+    const within = sorted.filter((w) => w.date >= cutoffStr);
+    return within.length > 0 ? within : sorted.slice(-Math.min(sorted.length, 7));
+  }, [weightLogs, weightRangeDays, selectedDate]);
+
+  const weightStats = useMemo(() => {
+    if (weightLogs.length === 0) return { start: 0, current: 0, change: 0, remaining: 0, bmi: 0 };
+    const sorted = [...weightLogs].sort((a, b) => a.date.localeCompare(b.date));
+    const start = sorted[0].weight;
+    const current = sorted[sorted.length - 1].weight;
+    const change = +(current - start).toFixed(1);
+    const remaining = +(current - (goals.targetWeight || 110)).toFixed(1);
+    const hMeters = (goals.heightCm || 181) / 100;
+    const bmi = +(current / (hMeters * hMeters)).toFixed(1);
+    return { start, current, change, remaining, bmi };
+  }, [weightLogs, goals.targetWeight, goals.heightCm]);
+
+  const weeklyDaysData = useMemo(() => {
+    return getLastNDays(selectedDate, 7).map((d) => {
+      const dayLog = logsByDate[d.date] || { water: 0, steps: 0, foods: [] };
+      const dayCal = (dayLog.foods || []).reduce((sum, item) => sum + (Number(item.cal) || 0), 0);
+      const dayProt = (dayLog.foods || []).reduce((sum, item) => sum + (Number(item.prot) || 0), 0);
+      return { ...d, cal: Math.round(dayCal), prot: Math.round(dayProt), water: Math.round(dayLog.water || 0), steps: Math.round(dayLog.steps || 0) };
+    });
+  }, [logsByDate, selectedDate]);
+
+  const activeStreak = useMemo(() => {
+    let streak = 0;
+    let checkDate = todayKey;
+    for (let i = 0; i < 60; i++) {
+      const entry = logsByDate[checkDate];
+      if (entry && ((entry.foods && entry.foods.length > 0) || (entry.steps || 0) >= 8000)) {
+        streak++;
+        checkDate = shiftDate(checkDate, -1);
+      } else break;
+    }
+    return streak;
+  }, [logsByDate, todayKey]);
+
+  const filteredFoods = useMemo(() => {
+    return allFoods.filter((f) => {
+      const matchesCat = selectedCategory === "All" || f.category === selectedCategory;
+      const matchesSearch = f.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCat && matchesSearch;
+    });
+  }, [allFoods, selectedCategory, searchQuery]);
+
+  const calPct = Math.min(100, Math.round((totals.cal / (goals.cal || 1)) * 100));
+  const calRemaining = Math.max(0, (goals.cal || 0) - Math.round(totals.cal));
+  const ringRadius = 56;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const ringOffset = ringCircumference - (calPct / 100) * ringCircumference;
+  const waterPct = Math.min(100, Math.round(((currentDayData.water || 0) / (goals.water || 1)) * 100));
+  const stepsPct = Math.min(100, Math.round(((currentDayData.steps || 0) / (goals.steps || 10000)) * 100));
+  const estStepKcal = Math.round((currentDayData.steps || 0) * 0.055);
+
+  const fastingElapsedMs = fastingState.isFasting && fastingState.startTime ? Math.max(0, nowTick - fastingState.startTime) : 0;
+  const fastingTargetMs = (fastingState.targetHours || 16) * 3600000;
+  const fastingPct = Math.min(100, Math.round((fastingElapsedMs / fastingTargetMs) * 100));
+
+  return (
+    <div className="min-h-screen max-w-md mx-auto bg-[#090d16] text-slate-100 flex flex-col pb-24 relative select-none">
+      {toastMsg && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-500 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-full shadow-xl border border-emerald-300 animate-bounce text-center max-w-[90vw]">
+          {toastMsg}
+        </div>
+      )}
+
+      <header className="sticky top-0 z-30 bg-[#090d16]/95 backdrop-blur-md border-b border-slate-800/80 px-3.5 py-2.5 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-base shadow-md shrink-0">N</div>
+          <div className="truncate">
+            <div className="flex items-center gap-1.5">
+              <h1 className="text-sm font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">NutriPulse v3</h1>
+              {activeStreak > 0 && (
+                <span className="text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded-full">🔥 {activeStreak}d</span>
+              )}
+            </div>
+            <p className="text-[10px] text-slate-400 truncate">Macros • Fasting • Steps • Weight</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1 shrink-0">
+          <button onClick={() => setSelectedDate(shiftDate(selectedDate, -1))} className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700/80 text-slate-300 text-xs font-bold flex items-center justify-center active:scale-90">‹</button>
+          <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} className="bg-slate-900 border border-slate-700/80 text-[11px] text-slate-200 rounded-lg px-2 py-1 focus:outline-none focus:border-emerald-500" />
+          <button onClick={() => setSelectedDate(shiftDate(selectedDate, 1))} className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700/80 text-slate-300 text-xs font-bold flex items-center justify-center active:scale-90">›</button>
+        </div>
+      </header>
+
+      <main className="flex-1 p-3.5 space-y-3.5">
+        {activeTab === "dashboard" && (
+          <>
+            <section className="bg-gradient-to-r from-amber-950/50 via-slate-900 to-slate-900 border border-amber-500/30 rounded-3xl p-3.5 shadow-xl">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <h2 className="text-xs font-extrabold text-amber-300 uppercase tracking-wider">⏱️ Intermittent Fasting ({fastingState.targetHours}:8)</h2>
+                  {fastingState.isFasting ? (
+                    <div className="mt-1">
+                      <span className="text-lg font-black text-white font-mono">{formatDuration(fastingElapsedMs)}</span>
+                      <span className="text-[11px] text-amber-300/90 ml-2 font-semibold">({fastingPct}% of {fastingState.targetHours}h)</span>
+                    </div>
+                  ) : (
+                    <p className="text-[11px] text-slate-400 mt-0.5">Eating window open • Tap Start after your last meal</p>
+                  )}
+                </div>
+                <button onClick={handleToggleFasting} className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-black transition active:scale-95 ${fastingState.isFasting ? "bg-rose-500/20 border border-rose-500/50 text-rose-300" : "bg-amber-400 text-slate-950 shadow-md"}`}>
+                  {fastingState.isFasting ? "End Fast" : "Start Fast"}
+                </button>
+              </div>
+              {fastingState.isFasting && (
+                <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden mt-2.5">
+                  <div className="bg-gradient-to-r from-amber-500 to-emerald-400 h-full rounded-full transition-all duration-500" style={{ width: `${fastingPct}%` }} />
+                </div>
+              )}
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl">
+              <div className="flex items-center justify-between gap-4">
+                <div className="relative w-32 h-32 flex items-center justify-center shrink-0">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 136 136">
+                    <circle cx="68" cy="68" r={ringRadius} stroke="#1e293b" strokeWidth="11" fill="transparent" />
+                    <circle cx="68" cy="68" r={ringRadius} stroke="url(#gradRing)" strokeWidth="11" strokeDasharray={ringCircumference} strokeDashoffset={ringOffset} strokeLinecap="round" fill="transparent" className="transition-all duration-500" />
+                    <defs>
+                      <linearGradient id="gradRing" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#10b981" />
+                        <stop offset="100%" stopColor="#06b6d4" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <span className="text-[9px] uppercase tracking-wider text-slate-400 font-semibold">Remaining</span>
+                    <span className="text-xl font-black text-white leading-tight">{calRemaining}</span>
+                    <span className="text-[10px] text-emerald-400 font-medium">{Math.round(totals.cal)} / {goals.cal}</span>
+                  </div>
+                </div>
+
+                <div className="flex-1 space-y-2.5">
+                  <div>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="font-bold text-rose-400">Protein</span>
+                      <span className="text-slate-300 font-semibold">{Math.round(totals.prot)} / {goals.prot}g</span>
+                    </div>
+                    <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div className="bg-gradient-to-r from-rose-500 to-pink-400 h-full rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (totals.prot / (goals.prot || 1)) * 100)}%` }} />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="font-bold text-amber-400">Carbs</span>
+                      <span className="text-slate-300 font-semibold">{Math.round(totals.carb)} / {goals.carb}g</span>
+                    </div>
+                    <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div className="bg-gradient-to-r from-amber-500 to-yellow-400 h-full rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (totals.carb / (goals.carb || 1)) * 100)}%` }} />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="font-bold text-purple-400">Fat</span>
+                      <span className="text-slate-300 font-semibold">{Math.round(totals.fat)} / {goals.fat}g</span>
+                    </div>
+                    <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                      <div className="bg-gradient-to-r from-purple-500 to-indigo-400 h-full rounded-full transition-all duration-300" style={{ width: `${Math.min(100, (totals.fat / (goals.fat || 1)) * 100)}%` }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {savedCombos.length > 0 && (
+                <div className="mt-3.5 pt-3 border-t border-slate-800/90 space-y-2">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">⚡ 1-Tap Meal Presets</span>
+                  <div className="flex gap-2 overflow-x-auto no-scrollbar pb-0.5">
+                    {savedCombos.map((c) => (
+                      <button key={c.id} onClick={() => applySavedCombo(c)} className="shrink-0 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold px-3 py-1.5 rounded-xl active:scale-95 transition">
+                        + {c.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+
+            <section className="bg-gradient-to-br from-emerald-950/60 via-slate-900 to-slate-900 border border-emerald-800/50 rounded-3xl p-4 shadow-xl">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <h2 className="text-sm font-bold text-emerald-300">👟 Daily Step Counter</h2>
+                  <p className="text-[11px] text-slate-400">Goal: {(goals.steps || 10000).toLocaleString()} • ~{estStepKcal} kcal burned</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-xl font-black text-emerald-400">{(currentDayData.steps || 0).toLocaleString()}</span>
+                  <span className="block text-[10px] text-emerald-200">{stepsPct}% done</span>
+                </div>
+              </div>
+              <div className="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden mb-3 border border-emerald-950">
+                <div className="bg-gradient-to-r from-emerald-500 to-lime-400 h-full rounded-full transition-all duration-500" style={{ width: `${stepsPct}%` }} />
+              </div>
+              <div className="grid grid-cols-4 gap-1.5">
+                <button onClick={() => handleAddSteps(1000)} className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 py-1.5 rounded-xl text-xs font-bold active:scale-95">+1,000</button>
+                <button onClick={() => handleAddSteps(2500)} className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 py-1.5 rounded-xl text-xs font-bold active:scale-95">+2,500</button>
+                <button onClick={() => handleAddSteps(5000)} className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 py-1.5 rounded-xl text-xs font-bold active:scale-95">+5,000</button>
+                <button onClick={() => handleAddSteps(-1000)} className="bg-slate-800 border border-slate-700 text-slate-300 py-1.5 rounded-xl text-xs font-bold active:scale-95">-1,000</button>
+              </div>
+            </section>
+
+            <section className="bg-gradient-to-br from-cyan-950/70 via-slate-900 to-slate-900 border border-cyan-800/50 rounded-3xl p-4 shadow-xl">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <h2 className="text-sm font-bold text-cyan-300">💧 Water Hydration</h2>
+                  <p className="text-[11px] text-slate-400">Target: {goals.water} ml ({Math.round((currentDayData.water || 0) / 250)} glasses)</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-xl font-black text-cyan-400">{currentDayData.water || 0}</span>
+                  <span className="text-xs text-cyan-200 ml-1">ml ({waterPct}%)</span>
+                </div>
+              </div>
+              <div className="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden mb-3 border border-cyan-950">
+                <div className="bg-gradient-to-r from-cyan-500 to-sky-400 h-full rounded-full transition-all duration-500" style={{ width: `${waterPct}%` }} />
+              </div>
+              <div className="grid grid-cols-4 gap-1.5">
+                <button onClick={() => handleAddWater(250)} className="bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 py-1.5 rounded-xl text-xs font-bold active:scale-95">+250ml</button>
+                <button onClick={() => handleAddWater(500)} className="bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 py-1.5 rounded-xl text-xs font-bold active:scale-95">+500ml</button>
+                <button onClick={() => handleAddWater(750)} className="bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 py-1.5 rounded-xl text-xs font-bold active:scale-95">+750ml</button>
+                <button onClick={() => handleAddWater(-250)} className="bg-slate-800 border border-slate-700 text-slate-300 py-1.5 rounded-xl text-xs font-bold active:scale-95">-250ml</button>
+              </div>
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl">
+              <button onClick={() => setShowMicros(!showMicros)} className="w-full flex items-center justify-between text-left">
+                <div>
+                  <h2 className="text-sm font-bold text-slate-200">🧬 Micronutrients & Electrolytes</h2>
+                  <p className="text-[11px] text-slate-400">Fiber, Sugar, Sodium, Potassium, Calcium, Iron & Vit C</p>
+                </div>
+                <span className="text-emerald-400 text-xs font-bold">{showMicros ? "Hide ▲" : "Show ▼"}</span>
+              </button>
+              {showMicros && (
+                <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-slate-800">
+                  {[
+                    { label: "Dietary Fiber", val: totals.fib.toFixed(1), goal: goals.fib, unit: "g", color: "bg-emerald-400" },
+                    { label: "Total Sugar", val: totals.sug.toFixed(1), goal: goals.sug, unit: "g", color: "bg-pink-400" },
+                    { label: "Sodium (Na)", val: Math.round(totals.sod), goal: goals.sod, unit: "mg", color: "bg-amber-400" },
+                    { label: "Potassium (K)", val: Math.round(totals.pot), goal: goals.pot, unit: "mg", color: "bg-cyan-400" },
+                    { label: "Calcium (Ca)", val: Math.round(totals.calc), goal: goals.calc, unit: "mg", color: "bg-indigo-400" },
+                    { label: "Iron (Fe)", val: totals.iro.toFixed(1), goal: goals.iro, unit: "mg", color: "bg-rose-400" },
+                    { label: "Vitamin C", val: totals.vitc.toFixed(1), goal: goals.vitc, unit: "mg", color: "bg-orange-400", span2: true }
+                  ].map((m, idx) => {
+                    const pct = Math.min(100, Math.round((parseFloat(m.val) / (m.goal || 1)) * 100));
+                    return (
+                      <div key={idx} className={`bg-slate-950/80 border border-slate-800/80 p-2.5 rounded-2xl ${m.span2 ? "col-span-2" : ""}`}>
+                        <div className="flex justify-between text-[11px] mb-1">
+                          <span className="text-slate-400 font-medium">{m.label}</span>
+                          <span className="text-slate-200 font-bold">{m.val} / {m.goal}{m.unit}</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`${m.color} h-full rounded-full`} style={{ width: `${pct}%` }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-bold text-slate-200">🍽️ Logged Meals ({(currentDayData.foods || []).length})</h2>
+                <button onClick={() => setActiveTab("logger")} className="text-xs bg-emerald-500 text-slate-950 font-bold px-3 py-1.5 rounded-xl active:scale-95 transition">+ Add / Import Food</button>
+              </div>
+              {(!currentDayData.foods || currentDayData.foods.length === 0) ? (
+                <div className="text-center py-6 border border-dashed border-slate-800 rounded-2xl">
+                  <p className="text-xs text-slate-400">No meals recorded for {selectedDate} yet.</p>
+                  <button onClick={() => setActiveTab("logger")} className="mt-2 text-xs text-emerald-400 font-bold underline">Browse Foods or Upload JSON →</button>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-2.5">
+                    {currentDayData.foods.map((item) => (
+                      <div key={item.id} className="bg-slate-950/90 border border-slate-800/90 p-3 rounded-2xl flex items-center justify-between gap-2">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">{item.meal || "Meal"}</span>
+                            <span className="text-[10px] text-slate-500">{item.time}</span>
+                          </div>
+                          <p className="text-xs font-bold text-slate-100 truncate mt-1">{item.name}</p>
+                          <p className="text-[11px] text-slate-400 mt-0.5">
+                            <strong className="text-emerald-400">{item.cal} kcal</strong> • P: {item.prot}g • C: {item.carb}g • F: {item.fat}g
+                          </p>
+                        </div>
+                        <button onClick={() => handleDeleteFoodLog(item.id)} className="w-8 h-8 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0">✕</button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-800/80 flex gap-2">
+                    <input type="text" placeholder="Name today's combo to save..." value={comboNameInput} onChange={(e) => setComboNameInput(e.target.value)} className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white" />
+                    <button onClick={saveTodayAsCombo} className="bg-slate-800 hover:bg-slate-700 border border-emerald-500/40 text-emerald-300 font-bold px-3 py-1.5 rounded-xl text-xs shrink-0">Save Preset</button>
+                  </div>
+                </>
+              )}
+            </section>
+          </>
+        )}
+
+        {activeTab === "logger" && (
+          <div className="space-y-4">
+            <section className="bg-gradient-to-r from-indigo-950/80 via-slate-900 to-emerald-950/60 border border-indigo-500/40 rounded-3xl p-4 shadow-xl">
+              <h2 className="text-sm font-extrabold text-indigo-300">📂 Import Foods via JSON</h2>
+              <p className="text-[11px] text-slate-400">Upload a .json file or paste JSON generated in chat</p>
+              <input ref={fileInputRef} type="file" accept=".json,application/json" onChange={handleFileUploadJson} className="hidden" />
+              <div className="grid grid-cols-2 gap-2 mt-2.5">
+                <button onClick={() => fileInputRef.current?.click()} className="bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-black py-2.5 px-3 rounded-xl text-xs shadow active:scale-95 transition">⬆️ Upload .JSON File</button>
+                <button onClick={() => setShowJsonPasteModal(!showJsonPasteModal)} className="bg-slate-900 hover:bg-slate-800 border border-indigo-400/50 text-indigo-200 font-bold py-2.5 px-3 rounded-xl text-xs active:scale-95 transition">
+                  {showJsonPasteModal ? "Close Paste Box" : "📋 Paste JSON Text"}
+                </button>
+              </div>
+              {showJsonPasteModal && (
+                <div className="mt-3 pt-3 border-t border-slate-800 space-y-2">
+                  <textarea rows="5" placeholder='[{"name": "Chicken Mandi", "cal": 210, "prot": 24, "carb": 18, "fat": 5, "unit": "100g"}]' value={jsonPasteText} onChange={(e) => setJsonPasteText(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-emerald-300 font-mono focus:outline-none focus:border-indigo-400" />
+                  <button onClick={() => processImportedFoodJson(jsonPasteText)} className="w-full bg-emerald-500 text-slate-950 font-black py-2 rounded-xl text-xs">Import Pasted JSON Now</button>
+                </div>
+              )}
+            </section>
+
+            {selectedFood && previewNutrients && (
+              <section className="bg-gradient-to-br from-emerald-950/60 via-slate-900 to-slate-900 border border-emerald-700/50 rounded-3xl p-4 shadow-xl">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-bold">Selected ({selectedFood.category})</span>
+                    <h3 className="text-base font-extrabold text-white mt-1">{selectedFood.name}</h3>
+                    <p className="text-xs text-slate-400">Base unit: {selectedFood.unit}</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-2xl font-black text-emerald-400">{previewNutrients.cal}</span>
+                    <span className="block text-[10px] text-slate-400 uppercase">kcal</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2.5 mt-3">
+                  <div>
+                    <label className="text-[11px] text-slate-400 block mb-1">Meal Slot</label>
+                    <select value={selectedMeal} onChange={(e) => setSelectedMeal(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                      {MEAL_TYPES.map((m) => <option key={m} value={m}>{m}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-[11px] text-slate-400 block mb-1">{selectedFood.isServing ? "Servings" : "Weight (g)"}</label>
+                    <input type="number" step={selectedFood.isServing ? "0.5" : "10"} min="0.1" value={amountInput} onChange={(e) => setAmountInput(e.target.value)} className="w-full bg-slate-950 border border-emerald-500/60 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+                  </div>
+                </div>
+                <div className="flex gap-1.5 mt-2.5 overflow-x-auto no-scrollbar">
+                  {(selectedFood.isServing ? [0.5, 1, 1.5, 2, 3, 4] : [50, 100, 150, 200, 300, 400]).map((val) => (
+                    <button key={val} onClick={() => setAmountInput(val)} className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition ${Number(amountInput) === val ? "bg-emerald-500 text-slate-950 border-emerald-400" : "bg-slate-900 text-slate-300 border-slate-800"}`}>
+                      {selectedFood.isServing ? `${val}x` : `${val}g`}
+                    </button>
+                  ))}
+                </div>
+                <div className="grid grid-cols-4 gap-1.5 mt-3 pt-3 border-t border-slate-800/80 text-center text-[11px]">
+                  <div className="bg-slate-950/80 p-1.5 rounded-xl"><span className="text-slate-400 block text-[10px]">Protein</span><strong className="text-rose-400">{previewNutrients.prot}g</strong></div>
+                  <div className="bg-slate-950/80 p-1.5 rounded-xl"><span className="text-slate-400 block text-[10px]">Carbs</span><strong className="text-amber-400">{previewNutrients.carb}g</strong></div>
+                  <div className="bg-slate-950/80 p-1.5 rounded-xl"><span className="text-slate-400 block text-[10px]">Fat</span><strong className="text-purple-400">{previewNutrients.fat}g</strong></div>
+                  <div className="bg-slate-950/80 p-1.5 rounded-xl"><span className="text-slate-400 block text-[10px]">Fiber</span><strong className="text-emerald-400">{previewNutrients.fib}g</strong></div>
+                </div>
+                <button onClick={handleLogSelectedFood} className="w-full mt-3 bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-lg active:scale-95 transition">+ Log {selectedFood.name} to {selectedMeal}</button>
+              </section>
+            )}
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-bold text-slate-200">🔍 Food Database ({allFoods.length})</h2>
+                <button onClick={() => setShowCustomModal(!showCustomModal)} className="text-xs bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-bold px-3 py-1.5 rounded-xl">
+                  {showCustomModal ? "Close Form" : "+ Manual Food"}
+                </button>
+              </div>
+              {showCustomModal && (
+                <form onSubmit={handleSaveCustomFood} className="bg-slate-950 border border-slate-800 rounded-2xl p-3 space-y-2.5">
+                  <input type="text" required placeholder="Food Name" value={newFood.name} onChange={(e) => setNewFood({ ...newFood, name: e.target.value })} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+                  <div className="flex items-center gap-2 text-xs text-slate-300">
+                    <input type="checkbox" id="servToggle" checked={newFood.isServing} onChange={(e) => setNewFood({ ...newFood, isServing: e.target.checked })} />
+                    <label htmlFor="servToggle">Track by single serving instead of per 100g</label>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="number" step="any" required placeholder="Calories (kcal)" value={newFood.cal} onChange={(e) => setNewFood({ ...newFood, cal: e.target.value })} className="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white" />
+                    <input type="number" step="any" placeholder="Protein (g)" value={newFood.prot} onChange={(e) => setNewFood({ ...newFood, prot: e.target.value })} className="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white" />
+                    <input type="number" step="any" placeholder="Carbs (g)" value={newFood.carb} onChange={(e) => setNewFood({ ...newFood, carb: e.target.value })} className="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white" />
+                    <input type="number" step="any" placeholder="Fat (g)" value={newFood.fat} onChange={(e) => setNewFood({ ...newFood, fat: e.target.value })} className="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white" />
+                  </div>
+                  <button type="submit" className="w-full bg-emerald-500 text-slate-950 font-bold py-2 rounded-xl text-xs">Save Custom Food</button>
+                </form>
+              )}
+              <input type="text" placeholder="Search chicken, tuna, koshary, rice, oats..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                {["All", "JSON Import", "Custom", "Protein", "Carbs", "Regional", "Fruits & Veg", "Dairy", "Fats", "Supplements"].map((cat) => (
+                  <button key={cat} onClick={() => setSelectedCategory(cat)} className={`px-3 py-1 rounded-full text-xs font-bold shrink-0 border transition ${selectedCategory === cat ? "bg-emerald-500 text-slate-950 border-emerald-400" : "bg-slate-950 text-slate-400 border-slate-800"}`}>{cat}</button>
+                ))}
+              </div>
+              <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                {filteredFoods.map((food) => (
+                  <div key={food.id} onClick={() => handleSelectFoodItem(food)} className={`p-3 rounded-2xl border cursor-pointer transition flex items-center justify-between ${selectedFood?.id === food.id ? "bg-emerald-950/50 border-emerald-500/70" : "bg-slate-950/80 border-slate-800/80 hover:border-slate-700"}`}>
+                    <div>
+                      <p className="text-xs font-bold text-slate-100">{food.name}</p>
+                      <p className="text-[11px] text-slate-400 mt-0.5">Per {food.unit}: <span className="text-emerald-400 font-semibold">{food.cal} kcal</span> • P: {food.prot}g • C: {food.carb}g • F: {food.fat}g</p>
+                    </div>
+                    <span className="text-xs font-bold text-emerald-400 px-2 py-1 rounded-lg bg-emerald-500/10">Select</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        )}
+
+        {activeTab === "weekly" && (
+          <div className="space-y-4">
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl">
+              <h2 className="text-sm font-extrabold text-white">📈 7-Day Calories & Water Graph</h2>
+              <p className="text-[11px] text-slate-400">Days ending {selectedDate}</p>
+              {(() => {
+                const maxCal = Math.max(goals.cal * 1.25, ...weeklyDaysData.map(d => d.cal), 2200);
+                const maxWat = Math.max(goals.water * 1.25, ...weeklyDaysData.map(d => d.water), 3500);
+                const chartH = 165, chartW = 340, padL = 34, padR = 36, padT = 16, padB = 34;
+                const innerW = chartW - padL - padR, innerH = chartH - padT - padB, slotW = innerW / 7;
+                return (
+                  <svg viewBox={`0 0 ${chartW} ${chartH}`} className="w-full h-52 mt-2">
+                    {[0, 0.5, 1].map((frac, idx) => {
+                      const y = padT + innerH - frac * innerH;
+                      return (
+                        <g key={idx}>
+                          <line x1={padL} y1={y} x2={chartW - padR} y2={y} stroke="#1e293b" strokeDasharray="3 3" strokeWidth="1" />
+                          <text x={padL - 4} y={y + 3} textAnchor="end" fontSize="8.5" fill="#34d399" fontWeight="bold">{Math.round(frac * maxCal)}</text>
+                          <text x={chartW - padR + 4} y={y + 3} textAnchor="start" fill="#22d3ee" fontSize="8.5" fontWeight="bold">{Math.round(frac * maxWat)}</text>
+                        </g>
+                      );
+                    })}
+                    {weeklyDaysData.map((d, i) => {
+                      const groupX = padL + i * slotW, barW = 10;
+                      const calBarH = Math.max(2, (d.cal / maxCal) * innerH);
+                      const watBarH = Math.max(2, (d.water / maxWat) * innerH);
+                      const calX = groupX + slotW / 2 - barW - 1.5, watX = groupX + slotW / 2 + 1.5;
+                      return (
+                        <g key={d.date} onClick={() => setSelectedDate(d.date)} className="cursor-pointer">
+                          <rect x={calX} y={padT + innerH - calBarH} width={barW} height={calBarH} rx="3" fill="#10b981" />
+                          <rect x={watX} y={padT + innerH - watBarH} width={barW} height={watBarH} rx="3" fill="#06b6d4" />
+                          <text x={groupX + slotW / 2} y={chartH - 15} textAnchor="middle" fontSize="8.5" fill={d.date === selectedDate ? "#34d399" : "#94a3b8"}>{d.shortDay}</text>
+                          <text x={groupX + slotW / 2} y={chartH - 5} textAnchor="middle" fontSize="7.5" fill="#64748b">{d.date.slice(5)}</text>
+                        </g>
+                      );
+                    })}
+                  </svg>
+                );
+              })()}
+              <div className="grid grid-cols-4 gap-1.5 mt-2 pt-2.5 border-t border-slate-800 text-center text-xs">
+                <div className="bg-slate-950/90 p-2 rounded-xl border border-slate-800"><span className="text-[9px] text-slate-400 block">Avg Cal</span><strong className="text-emerald-400 text-[11px]">{Math.round(weeklyDaysData.reduce((s, d) => s + d.cal, 0) / 7)}</strong></div>
+                <div className="bg-slate-950/90 p-2 rounded-xl border border-slate-800"><span className="text-[9px] text-slate-400 block">Avg Prot</span><strong className="text-rose-400 text-[11px]">{Math.round(weeklyDaysData.reduce((s, d) => s + d.prot, 0) / 7)}g</strong></div>
+                <div className="bg-slate-950/90 p-2 rounded-xl border border-slate-800"><span className="text-[9px] text-slate-400 block">Avg Water</span><strong className="text-cyan-400 text-[11px]">{(weeklyDaysData.reduce((s, d) => s + d.water, 0) / 7000).toFixed(1)}L</strong></div>
+                <div className="bg-slate-950/90 p-2 rounded-xl border border-slate-800"><span className="text-[9px] text-slate-400 block">Avg Steps</span><strong className="text-lime-400 text-[11px]">{Math.round(weeklyDaysData.reduce((s, d) => s + d.steps, 0) / 7).toLocaleString()}</strong></div>
+              </div>
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-black text-emerald-300">👟 Exact Steps Entry ({selectedDate})</h3>
+                <button onClick={() => updateCurrentDay((d) => ({ ...d, steps: 0 }))} className="text-[10px] text-rose-400 font-bold">Reset Steps</button>
+              </div>
+              <div className="flex gap-2">
+                <input type="number" placeholder="Set exact steps (e.g. 10450)" value={customStepsInput} onChange={(e) => setCustomStepsInput(e.target.value)} className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+                <button onClick={() => { const val = parseInt(customStepsInput, 10); if (!isNaN(val) && val >= 0) { updateCurrentDay((d) => ({ ...d, steps: val })); setCustomStepsInput(""); triggerToast(`Steps set to ${val.toLocaleString()}!`); } }} className="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">Set Exact</button>
+              </div>
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+                <h3 className="text-sm font-black text-cyan-300">💧 Custom Water ({currentDayData.water || 0} ml)</h3>
+                <button onClick={() => updateCurrentDay((d) => ({ ...d, water: 0, waterHistory: [] }))} className="text-[10px] text-rose-400 font-bold">Reset Water</button>
+              </div>
+              <div className="flex gap-2">
+                <input type="number" placeholder="Add custom ml (e.g. 400)" value={customWaterInput} onChange={(e) => setCustomWaterInput(e.target.value)} className="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+                <button onClick={() => { const val = parseInt(customWaterInput, 10); if (val) { handleAddWater(val); setCustomWaterInput(""); } }} className="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">+ Add ml</button>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {activeTab === "weight" && (
+          <div className="space-y-4">
+            <section className="grid grid-cols-4 gap-2">
+              <div className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl text-center"><span className="text-[9px] uppercase text-slate-400 block">Current</span><strong className="text-base font-black text-white">{weightStats.current}kg</strong></div>
+              <div className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl text-center"><span className="text-[9px] uppercase text-slate-400 block">Change</span><strong className={`text-base font-black ${weightStats.change <= 0 ? "text-emerald-400" : "text-rose-400"}`}>{weightStats.change > 0 ? `+${weightStats.change}` : weightStats.change}kg</strong></div>
+              <div className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl text-center"><span className="text-[9px] uppercase text-slate-400 block">To {goals.targetWeight}kg</span><strong className="text-base font-black text-cyan-400">{weightStats.remaining > 0 ? `-${weightStats.remaining}` : "Goal!"}</strong></div>
+              <div className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-2xl text-center"><span className="text-[9px] uppercase text-slate-400 block">BMI</span><strong className="text-base font-black text-amber-400">{weightStats.bmi}</strong></div>
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-sm font-extrabold text-white">⚖️ Weight Trend Graph</h2>
+                <div className="flex gap-1">
+                  {[{ label: "7D", days: 7 }, { label: "30D", days: 30 }, { label: "90D", days: 90 }, { label: "All", days: 365 }].map((r) => (
+                    <button key={r.days} onClick={() => setWeightRangeDays(r.days)} className={`px-2 py-1 rounded-lg text-[10px] font-bold border ${weightRangeDays === r.days ? "bg-emerald-500 text-slate-950 border-emerald-400" : "bg-slate-950 text-slate-400 border-slate-800"}`}>{r.label}</button>
+                  ))}
+                </div>
+              </div>
+              {filteredWeightLogs.length > 0 && (() => {
+                const weights = filteredWeightLogs.map((w) => w.weight);
+                const minW = Math.floor(Math.min(...weights, goals.targetWeight || 110) - 2);
+                const maxW = Math.ceil(Math.max(...weights) + 2);
+                const spanW = Math.max(4, maxW - minW);
+                const svgW = 340, svgH = 170, padL = 36, padR = 18, padT = 18, padB = 32;
+                const plotW = svgW - padL - padR, plotH = svgH - padT - padB;
+                const points = filteredWeightLogs.map((entry, idx) => ({
+                  x: filteredWeightLogs.length === 1 ? padL + plotW / 2 : padL + (idx / (filteredWeightLogs.length - 1)) * plotW,
+                  y: padT + plotH - ((entry.weight - minW) / spanW) * plotH,
+                  ...entry
+                }));
+                const targetY = padT + plotH - (((goals.targetWeight || 110) - minW) / spanW) * plotH;
+                const polylineStr = points.map((p) => `${p.x},${p.y}`).join(" ");
+                return (
+                  <svg viewBox={`0 0 ${svgW} ${svgH}`} className="w-full h-52">
+                    <line x1={padL} y1={targetY} x2={svgW - padR} y2={targetY} stroke="#06b6d4" strokeDasharray="4 2" strokeWidth="1.2" />
+                    {points.length > 1 && <polyline fill="none" stroke="#10b981" strokeWidth="2.5" points={polylineStr} />}
+                    {points.map((p) => (
+                      <g key={p.date}>
+                        <circle cx={p.x} cy={p.y} r="4" fill="#090d16" stroke="#34d399" strokeWidth="2.5" />
+                        <text x={p.x} y={p.y - 7} textAnchor="middle" fontSize="8" fill="#ecfdf5" fontWeight="bold">{p.weight}</text>
+                        <text x={p.x} y={svgH - 10} textAnchor="middle" fontSize="7.5" fill="#94a3b8">{p.date.slice(5)}</text>
+                      </g>
+                    ))}
+                  </svg>
+                );
+              })()}
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 shadow-xl">
+              <h3 className="text-sm font-bold text-emerald-400 mb-2.5">➕ Log Body Weight</h3>
+              <form onSubmit={handleAddOrUpdateWeight} className="space-y-2.5">
+                <div className="grid grid-cols-2 gap-2.5">
+                  <input type="date" required value={weightInputDate} onChange={(e) => setWeightInputDate(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+                  <input type="number" step="0.1" required placeholder="Weight (kg)" value={weightInputValue} onChange={(e) => setWeightInputValue(e.target.value)} className="w-full bg-slate-950 border border-emerald-500/60 rounded-xl px-3 py-2 text-xs font-bold text-white" />
+                </div>
+                <input type="text" placeholder="Optional note" value={weightInputNote} onChange={(e) => setWeightInputNote(e.target.value)} className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+                <button type="submit" className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-lg">Save Weight Entry</button>
+              </form>
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 space-y-2">
+              <h3 className="text-xs font-bold uppercase text-slate-400">History ({weightLogs.length})</h3>
+              {weightLogs.slice().sort((a, b) => b.date.localeCompare(a.date)).map((w) => (
+                <div key={w.date} className="bg-slate-950 border border-slate-800 px-3 py-2.5 rounded-2xl flex items-center justify-between text-xs">
+                  <div><span className="font-bold text-white">{w.weight} kg</span> <span className="text-slate-400 ml-2">{w.date}</span></div>
+                  <button onClick={() => handleDeleteWeight(w.date)} className="text-rose-400 px-2 py-1 font-bold">✕</button>
+                </div>
+              ))}
+            </section>
+          </div>
+        )}
+
+        {activeTab === "settings" && (
+          <div className="space-y-4">
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 space-y-3">
+              <h2 className="text-sm font-bold text-emerald-400">🎯 Daily Targets, Fasting & Body Profile</h2>
+              <div className="grid grid-cols-2 gap-2.5 text-xs">
+                {[
+                  { key: "cal", label: "Daily Calories (kcal)" }, { key: "prot", label: "Protein Target (g)" },
+                  { key: "carb", label: "Carbs Target (g)" }, { key: "fat", label: "Fat Target (g)" },
+                  { key: "water", label: "Water Goal (ml)" }, { key: "steps", label: "Daily Steps Goal" },
+                  { key: "fastingHours", label: "Fasting Window (hrs)" }, { key: "targetWeight", label: "Target Weight (kg)" },
+                  { key: "heightCm", label: "Height (cm)" }, { key: "fib", label: "Fiber Target (g)" },
+                  { key: "sod", label: "Sodium Limit (mg)" }, { key: "pot", label: "Potassium Goal (mg)" }
+                ].map((g) => (
+                  <div key={g.key} className="bg-slate-950 border border-slate-800 p-2.5 rounded-xl">
+                    <label className="text-[11px] text-slate-400 block mb-1">{g.label}</label>
+                    <input type="number" value={goals[g.key]} onChange={(e) => { const val = Number(e.target.value) || 0; setGoals({ ...goals, [g.key]: val }); if (g.key === "fastingHours") setFastingState((p) => ({ ...p, targetHours: val || 16 })); }} className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white" />
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="bg-slate-900/90 border border-slate-800 rounded-3xl p-4 space-y-2.5">
+              <h2 className="text-sm font-bold text-slate-200">💾 Full App Backup, Restore & Reset</h2>
+              <input ref={backupImportRef} type="file" accept=".json,application/json" onChange={handleRestoreFullBackup} className="hidden" />
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={handleExportJSON} className="bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold py-2.5 rounded-xl text-xs">⬇ Export Full Backup</button>
+                <button onClick={() => backupImportRef.current?.click()} className="bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 font-bold py-2.5 rounded-xl text-xs">⬆ Restore Full Backup</button>
+              </div>
+              <button onClick={() => { if (confirm(`Clear all logged data for ${selectedDate}?`)) { updateCurrentDay(() => ({ water: 0, steps: 0, waterHistory: [], foods: [] })); triggerToast("Cleared selected day's log."); } }} className="w-full bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold py-2.5 rounded-xl text-xs">🗑 Reset Selected Day ({selectedDate})</button>
+            </section>
+          </div>
+        )}
+      </main>
+
+      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#090d16]/95 backdrop-blur-lg border-t border-slate-800/90 px-2 py-2 flex justify-around items-center z-40">
+        {[
+          { id: "dashboard", icon: "📊", label: "Daily" },
+          { id: "logger", icon: "🍽️", label: "Foods/JSON" },
+          { id: "weekly", icon: "📈", label: "Weekly" },
+          { id: "weight", icon: "⚖️", label: "Weight" },
+          { id: "settings", icon: "⚙️", label: "Goals" }
+        ].map((tab) => (
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex flex-col items-center py-1 px-2.5 rounded-2xl transition ${activeTab === tab.id ? "text-emerald-400 bg-emerald-500/10 font-bold" : "text-slate-400"}`}>
+            <span className="text-base">{tab.icon}</span>
+            <span className="text-[10px] mt-0.5">{tab.label}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+
+=== FILE: src/index.css ===
+@import "tailwindcss";
+
+
+=== FILE: src/main.jsx ===
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
